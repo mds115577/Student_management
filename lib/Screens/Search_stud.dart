@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/Stud_Prof.dart';
+
+import '../db_funct/database.dart';
 
 class SearchStud extends StatelessWidget {
   SearchStud({Key? key}) : super(key: key);
@@ -31,19 +33,19 @@ class SearchStud extends StatelessWidget {
                       ),
                       controller: searchController,
                       onChanged: (value) {
-                        getSearchResult(value);
+                        context.read<Counter>().getSearchResult(value);
                       },
                     ),
                   ),
                 ),
               ],
             ),
-            Obx(
-              () {
+            Consumer<Counter>(
+              builder: (context, datas, _) {
                 return Expanded(
                   child: ListView.separated(
                       itemBuilder: (context, index) {
-                        var data = searchData[index];
+                        var data = datas.searchData[index];
                         if (data.name
                             .toLowerCase()
                             .contains(searchController.text.toLowerCase())) {
@@ -74,7 +76,7 @@ class SearchStud extends StatelessWidget {
                       separatorBuilder: (context, index) {
                         return const Divider();
                       },
-                      itemCount: searchData.length),
+                      itemCount: context.read<Counter>().searchData.length),
                 );
               },
             ),

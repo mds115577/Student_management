@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:student_manag/db_funct/data_model.dart';
 import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/List_Stud.dart';
@@ -191,7 +192,8 @@ class Add extends StatelessWidget {
 
     final _student = Stud_model(
         age: _age, regnum: _reg, class1: _class1, name: _name, img: img);
-    addStudent(_student);
+    context.read<Counter>().addStudent(_student);
+    context.read<Counter>().studentListNotifier.clear();
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Color.fromARGB(255, 72, 202, 77),
       content: Text('Data Entered SuccessFully'),

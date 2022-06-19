@@ -33,7 +33,7 @@ dependencies:
   get: ^4.6.1
   hive_flutter: ^1.1.0
   image_picker: ^0.8.5
-
+  provider:
 dev_dependencies:
   build_runner: ^2.1.5
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:provider/provider.dart';
 import 'package:student_manag/db_funct/data_model.dart';
 import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/List_Stud.dart';
@@ -181,7 +182,7 @@ class Stud_update extends StatelessWidget {
           name: _name,
           id: data.id,
           img: img);
-      UpdateStudent(_student);
+      context.read<Counter>().UpdateStudent(_student);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Color.fromARGB(255, 72, 202, 77),
         content: Text('Data Entered SuccessFully'),

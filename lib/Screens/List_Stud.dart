@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_manag/Screens/Stud_update.dart';
 import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/db_funct/data_model.dart';
@@ -20,32 +21,30 @@ class ListStud extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 128, 189, 63),
-        title: Center(child: Text('Home')),
+        backgroundColor: const Color.fromARGB(255, 128, 189, 63),
+        title: const Center(child: Text('Home')),
         actions: [
           IconButton(
               onPressed: () {
-                searchData.clear();
+                context.read<Counter>().searchData.clear();
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SearchStud()));
               },
-              icon: Icon(Icons.search))
+              icon: const Icon(Icons.search))
         ],
       ),
       body: SafeArea(
-        child: ValueListenableBuilder(
-          valueListenable: studentListNotifier,
-          builder:
-              (BuildContext ctx, List<Stud_model> studentList, Widget? child) {
+        child: Consumer<Counter>(
+          builder: (context, datas, _) {
             return ListView.separated(
-              itemBuilder: (ctx, index) {
-                final data = studentList[index];
+              itemBuilder: (context, index) {
+                final data = datas.studentListNotifier[index];
                 final encoding = data.img;
-                images = Base64Decoder().convert(encoding);
+                images = const Base64Decoder().convert(encoding);
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
-                    color: Color.fromARGB(168, 186, 204, 156),
+                    color: const Color.fromARGB(168, 186, 204, 156),
                     child: ListTile(
                       leading: CircleAvatar(
                         backgroundImage: MemoryImage(images),
@@ -72,7 +71,7 @@ class ListStud extends StatelessWidget {
                           IconButton(
                             onPressed: () {
                               if (data.id != null) {
-                                deletestudent(index);
+                                context.read<Counter>().deletestudent(index);
                               }
                             },
                             icon: const Icon(
@@ -83,7 +82,7 @@ class ListStud extends StatelessWidget {
                         ],
                       ),
                       onTap: () {
-                        Navigator.of(ctx).push(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (ctx1) => StudProf(
                               data: data,
@@ -98,7 +97,7 @@ class ListStud extends StatelessWidget {
               separatorBuilder: (ctx, index) {
                 return const Divider();
               },
-              itemCount: studentList.length,
+              itemCount: datas.studentListNotifier.length,
             );
           },
         ),
@@ -115,8 +114,8 @@ class ListStud extends StatelessWidget {
             ),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 128, 189, 63),
+        child: const Icon(Icons.add),
+        backgroundColor: const Color.fromARGB(255, 128, 189, 63),
       ),
     );
   }
