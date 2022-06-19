@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:student_manag/Screens/Stud_update.dart';
 import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/db_funct/data_model.dart';
@@ -12,111 +13,107 @@ import '../db_funct/database.dart';
 
 class ListStud extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
+
   var images;
   Stud_model? data;
   ListStud({Key? key}) : super(key: key);
-
+  final s = Cont();
   @override
   Widget build(BuildContext context) {
+    s.getAllstud();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 128, 189, 63),
-        title: Center(child: Text('Home')),
+        backgroundColor: const Color.fromARGB(255, 128, 189, 63),
+        title: const Center(child: Text('Home')),
         actions: [
           IconButton(
               onPressed: () {
                 searchData.clear();
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SearchStud()));
+                Get.to(SearchStud());
               },
-              icon: Icon(Icons.search))
+              icon: const Icon(Icons.search))
         ],
       ),
-      body: SafeArea(
-        child: ValueListenableBuilder(
-          valueListenable: studentListNotifier,
-          builder:
-              (BuildContext ctx, List<Stud_model> studentList, Widget? child) {
-            return ListView.separated(
-              itemBuilder: (ctx, index) {
-                final data = studentList[index];
-                final encoding = data.img;
-                images = Base64Decoder().convert(encoding);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: Color.fromARGB(168, 186, 204, 156),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: MemoryImage(images),
-                        radius: 30,
-                      ),
-                      title: Text('Name : ${data.name}'),
-                      subtitle: Text('RegNo : ${data.regnum}'),
-                      trailing: Wrap(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: ((context) =>
-                                      Stud_update(data: data, editor: true)),
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Colors.lightBlue,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (data.id != null) {
-                                deletestudent(index);
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.of(ctx).push(
-                          MaterialPageRoute(
-                            builder: (ctx1) => StudProf(
-                              data: data,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+      body: SafeArea(child: Obx(() {
+        return ListView.separated(
+          itemBuilder: (ctx, index) {
+            final data = studentListNotifier[index];
+            final encoding = data.img;
+            images = const Base64Decoder().convert(encoding);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                color: const Color.fromARGB(168, 186, 204, 156),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: MemoryImage(images),
+                    radius: 30,
                   ),
-                );
-              },
-              separatorBuilder: (ctx, index) {
-                return const Divider();
-              },
-              itemCount: studentList.length,
+                  title: Text('Name : ${data.name}'),
+                  subtitle: Text('RegNo : ${data.regnum}'),
+                  trailing: Wrap(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Get.to(Stud_update(
+                            data: data,
+                            editor: true,
+                          ));
+                        },
+                        icon: const Icon(
+                          Icons.edit,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Get.defaultDialog(
+                              title: 'Alert',
+                              middleText: 'Do You Want Delete the Data',
+                              titleStyle: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              textConfirm: 'Yes',
+                              textCancel: 'No',
+                              onConfirm: () {
+                                if (data.id != null) {
+                                  s.deletestudent(data.id!);
+                                  Get.back();
+                                }
+                              },
+                              onCancel: () {
+                                Get.back();
+                              },
+                              confirmTextColor: Colors.white);
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(StudProf(data: data));
+                  },
+                ),
+              ),
             );
           },
-        ),
-      ),
+          separatorBuilder: (ctx, index) {
+            return const Divider();
+          },
+          itemCount: studentListNotifier.length,
+        );
+      })),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           img = '';
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => Add(
-                    data: data,
-                  )),
-            ),
-          );
+          Get.off(Add(
+            data: data,
+          ));
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 128, 189, 63),
+        child: const Icon(Icons.add),
+        backgroundColor: const Color.fromARGB(255, 128, 189, 63),
       ),
     );
   }

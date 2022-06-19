@@ -7,6 +7,7 @@ import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/List_Stud.dart';
 
 class Add extends StatelessWidget {
+  Cont s = Cont();
   final Stud_model? data;
   Add({Key? key, this.data}) : super(key: key);
 
@@ -24,6 +25,11 @@ class Add extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Get.off(ListStud());
+            },
+            icon: const Icon(Icons.arrow_back)),
         backgroundColor: const Color.fromARGB(255, 128, 189, 63),
         title: const Text(
           'Profile Data',
@@ -68,7 +74,7 @@ class Add extends StatelessWidget {
                 },
                 icon: const Icon(Icons.add_a_photo)),
             Padding(
-              padding: const EdgeInsets.only(top: 50.0, bottom: 30),
+              padding: const EdgeInsets.only(top: 10.0, bottom: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -183,7 +189,7 @@ class Add extends StatelessWidget {
     );
   }
 
-  checkLogin(BuildContext context) {
+  checkLogin(BuildContext context) async {
     final _name = _namecontroller.text;
     final _age = _agecontroller.text;
     final _class1 = _classcontroller.text;
@@ -191,13 +197,19 @@ class Add extends StatelessWidget {
 
     final _student = Stud_model(
         age: _age, regnum: _reg, class1: _class1, name: _name, img: img);
-    addStudent(_student);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      backgroundColor: Color.fromARGB(255, 72, 202, 77),
-      content: Text('Data Entered SuccessFully'),
-    ));
+    s.addStudent(_student);
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //   backgroundColor: Color.fromARGB(255, 72, 202, 77),
+    //   content: Text('Data Entered SuccessFully'),
+    // ));
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => ListStud()), (route) => false);
+    await s.getAllstud();
+    Get.off(ListStud());
+    Get.snackbar('Added', 'Data Succesfully Added',
+        backgroundColor:
+            const Color.fromARGB(255, 39, 232, 39).withOpacity(0.7),
+        snackPosition: SnackPosition.BOTTOM);
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (context) => ListStud()), (route) => false);
   }
 }

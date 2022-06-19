@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get.dart';
 import 'package:student_manag/db_funct/data_model.dart';
 import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/List_Stud.dart';
 
 class Stud_update extends StatelessWidget {
+  Cont s = Cont();
   final Stud_model data;
   bool? editor;
   final _nameformController = TextEditingController();
@@ -181,13 +180,14 @@ class Stud_update extends StatelessWidget {
           name: _name,
           id: data.id,
           img: img);
-      UpdateStudent(_student);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Color.fromARGB(255, 72, 202, 77),
-        content: Text('Data Entered SuccessFully'),
-      ));
+      s.UpdateStudent(_student);
+      Get.snackbar('Added', 'Data Updated Added',
+          backgroundColor:
+              const Color.fromARGB(255, 39, 232, 39).withOpacity(0.7),
+          snackPosition: SnackPosition.BOTTOM);
     }
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => ListStud()), (route) => false);
+    Get.offAll(ListStud());
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (context) => ListStud()), (route) => false);
   }
 }

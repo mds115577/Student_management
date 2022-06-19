@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:student_manag/Screens/Stud_update.dart';
 import 'package:student_manag/db_funct/data_model.dart';
 
 class StudProf extends StatelessWidget {

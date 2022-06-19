@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:student_manag/db_funct/data_model.dart';
-import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/List_Stud.dart';
 
 Future<void> main() async {
@@ -9,7 +9,7 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(StudmodelAdapter().typeId)) {
     Hive.registerAdapter(StudmodelAdapter());
   }
-  await getAllstud();
+
   runApp(const MyApp());
 }
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(primarySwatch: Colors.lightGreen),
       debugShowCheckedModeBanner: false,
       home: ListStud(),

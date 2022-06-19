@@ -4,6 +4,8 @@ import 'package:student_manag/db_funct/database.dart';
 import 'package:student_manag/Screens/Stud_Prof.dart';
 
 class SearchStud extends StatelessWidget {
+  Cont s = Get.put(Cont());
+
   SearchStud({Key? key}) : super(key: key);
   final searchController = TextEditingController();
   @override
@@ -31,7 +33,7 @@ class SearchStud extends StatelessWidget {
                       ),
                       controller: searchController,
                       onChanged: (value) {
-                        getSearchResult(value);
+                        s.getSearchResult(value);
                       },
                     ),
                   ),
@@ -53,13 +55,7 @@ class SearchStud extends StatelessWidget {
                               color: const Color.fromARGB(168, 186, 204, 156),
                               child: ListTile(
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => StudProf(
-                                        data: data,
-                                      ),
-                                    ),
-                                  );
+                                  Get.to(StudProf(data: data));
                                 },
                                 title: Text(
                                   data.name.toUpperCase(),
