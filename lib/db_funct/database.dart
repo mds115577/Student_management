@@ -8,12 +8,12 @@ import 'package:student_manag/db_funct/data_model.dart';
 
 File? image;
 String img = '';
-
 RxList<Stud_model> studentListNotifier = <Stud_model>[].obs;
-//ValueNotifier<List<Stud_model>> studentListNotifier = ValueNotifier([]);
 RxList<Stud_model> searchData = <Stud_model>[].obs;
 
 class Cont extends GetxController {
+//ValueNotifier<List<Stud_model>> studentListNotifier = ValueNotifier([]);
+
   pickimage() async {
     final pimage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pimage == null) {
