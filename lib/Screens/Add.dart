@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:student_manag/db_funct/data_model.dart';
 import 'package:student_manag/db_funct/database.dart';
@@ -19,7 +18,6 @@ class Add extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Cont _cont = Get.put(Cont());
     if (data != null) {
       _namecontroller.text = data!.name;
     }
@@ -36,7 +34,7 @@ class Add extends StatelessWidget {
         child: SafeArea(
             child: ListView(
           children: [
-            GetBuilder<Cont>(builder: (cont) {
+            Consumer<Counter>(builder: (context, datas, _) {
               return Padding(
                 padding: const EdgeInsets.only(top: 38.0),
                 child: Column(
@@ -65,7 +63,7 @@ class Add extends StatelessWidget {
             }),
             IconButton(
                 onPressed: () async {
-                  _cont.pickimage();
+                  context.read<Counter>().pickimage();
                 },
                 icon: const Icon(Icons.add_a_photo)),
             Padding(

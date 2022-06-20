@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:provider/provider.dart';
 import 'package:student_manag/db_funct/data_model.dart';
 import 'package:student_manag/db_funct/database.dart';
@@ -25,7 +22,7 @@ class Stud_update extends StatelessWidget {
     _ageformController.text = data.age;
     _class1formController.text = data.class1;
     _regnumformController.text = data.regnum;
-    final Cont _cont = Get.put(Cont());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 128, 189, 63),
@@ -47,7 +44,7 @@ class Stud_update extends StatelessWidget {
                 ),
               ],
             ),
-            GetBuilder<Cont>(builder: (cont) {
+            Consumer<Counter>(builder: (context, datas, _) {
               if (editor == true) {
                 img = data.img;
                 editor = false;
@@ -61,7 +58,7 @@ class Stud_update extends StatelessWidget {
             }),
             IconButton(
                 onPressed: () async {
-                  _cont.pickimage();
+                  context.read<Counter>().pickimage();
                 },
                 icon: const Icon(Icons.add_a_photo)),
             Padding(
