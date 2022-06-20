@@ -28,7 +28,7 @@ class ListStud extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                searchData.clear();
+                s.searchData.clear();
                 Get.to(SearchStud());
               },
               icon: const Icon(Icons.search))

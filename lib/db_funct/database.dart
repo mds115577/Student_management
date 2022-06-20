@@ -9,9 +9,10 @@ import 'package:student_manag/db_funct/data_model.dart';
 File? image;
 String img = '';
 RxList<Stud_model> studentListNotifier = <Stud_model>[].obs;
-RxList<Stud_model> searchData = <Stud_model>[].obs;
 
 class Cont extends GetxController {
+  RxList<Stud_model> searchData = <Stud_model>[].obs;
+
 //ValueNotifier<List<Stud_model>> studentListNotifier = ValueNotifier([]);
 
   pickimage() async {
@@ -33,12 +34,14 @@ class Cont extends GetxController {
     studentDB.put(value.id, value);
     studentListNotifier.addAll(studentDB.values);
     // studentListNotifier.notifyListeners();
+    update();
   }
 
   Future<void> getAllstud([String? value]) async {
     final studentDB = await Hive.openBox<Stud_model>('student_db');
     studentListNotifier.clear();
     studentListNotifier.addAll(studentDB.values);
+    update();
     // studentListNotifier.notifyListeners();
   }
 
@@ -68,6 +71,7 @@ class Cont extends GetxController {
           img: index.img,
         );
         searchData.add(data);
+        update();
       }
     }
   }

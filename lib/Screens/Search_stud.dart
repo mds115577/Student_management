@@ -45,7 +45,7 @@ class SearchStud extends StatelessWidget {
                 return Expanded(
                   child: ListView.separated(
                       itemBuilder: (context, index) {
-                        var data = searchData[index];
+                        var data = s.searchData[index];
                         if (data.name
                             .toLowerCase()
                             .contains(searchController.text.toLowerCase())) {
@@ -70,7 +70,7 @@ class SearchStud extends StatelessWidget {
                       separatorBuilder: (context, index) {
                         return const Divider();
                       },
-                      itemCount: searchData.length),
+                      itemCount: s.searchData.length),
                 );
               },
             ),
